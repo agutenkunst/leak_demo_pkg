@@ -5,6 +5,9 @@ Related to
 - https://github.com/ros/pluginlib/issues/126
 - https://github.com/ros/class_loader/issues/131
 
+Maybe this is https://github.com/google/sanitizers/issues/89
+https://stackoverflow.com/questions/44627258/addresssanitizer-and-loading-of-dynamic-libraries-at-runtime-unknown-module
+
 ## Demonstrate
 Run
 ```
