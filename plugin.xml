@@ -1,0 +1,5 @@
+<library path="lib/libplugin">
+  <class type="plugin::Plugin" base_class_type="plugin_base::Base">
+    <description>Simple Plugin</description>
+  </class>
+</library>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>leak_demo_pkg</name>
+  <version>0.0.0</version>
+  <description>The leak_demo_pkg package</description>
+
+  <maintainer email="alex@todo.todo">alex</maintainer>
+
+  <license>LGPLv3</license>
+
+  <depend>pluginlib</depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <leak_demo_pkg plugin="${prefix}/plugin.xml" />
+  </export>
+</package>
