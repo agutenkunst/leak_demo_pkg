@@ -14,7 +14,7 @@ Run
 catkin_make -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS_DEBUG="-g -fno-omit-frame-pointer -fsanitize=address" -DCMAKE_EXE_LINKER_FLAGS_DEBUG="-g -fsanitize=address" && rosrun leak_demo_pkg main
 ```
 
-which results in 
+which results in
 ```
 ==26394==ERROR: LeakSanitizer: detected memory leaks
 
@@ -47,3 +47,50 @@ Indirect leak of 8 byte(s) in 1 object(s) allocated from:
 SUMMARY: AddressSanitizer: 262 byte(s) leaked in 5 allocation(s).
 ```
 
+## Using valgrind
+Running (rebuild without sanitizing flags before!)
+```
+valgrind --leak-check=full ./main
+```
+
+yields
+```
+==25985== Memcheck, a memory error detector
+==25985== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==25985== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==25985== Command: ./main
+==25985==
+==25985==
+==25985== HEAP SUMMARY:
+==25985==     in use at exit: 2,957 bytes in 49 blocks
+==25985==   total heap usage: 15,970 allocs, 15,921 frees, 18,547,566 bytes allocated
+==25985==
+==25985== 264 (160 direct, 104 indirect) bytes in 1 blocks are definitely lost in loss record 46 of 46
+==25985==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==25985==    by 0xDCE682C: ???
+==25985==    by 0xDCE5BC7: ???
+==25985==    by 0xDCE5CC4: ???
+==25985==    by 0xDCE5CDA: ???
+==25985==    by 0x4010732: call_init (dl-init.c:72)
+==25985==    by 0x4010732: _dl_init (dl-init.c:119)
+==25985==    by 0x40151FE: dl_open_worker (dl-open.c:522)
+==25985==    by 0x660B2DE: _dl_catch_exception (dl-error-skeleton.c:196)
+==25985==    by 0x40147C9: _dl_open (dl-open.c:605)
+==25985==    by 0x7F2DF95: dlopen_doit (dlopen.c:66)
+==25985==    by 0x660B2DE: _dl_catch_exception (dl-error-skeleton.c:196)
+==25985==    by 0x660B36E: _dl_catch_error (dl-error-skeleton.c:215)
+==25985==
+==25985== LEAK SUMMARY:
+==25985==    definitely lost: 160 bytes in 1 blocks
+==25985==    indirectly lost: 104 bytes in 4 blocks
+==25985==      possibly lost: 0 bytes in 0 blocks
+==25985==    still reachable: 2,693 bytes in 44 blocks
+==25985==         suppressed: 0 bytes in 0 blocks
+==25985== Reachable blocks (those to which a pointer was found) are not shown.
+==25985== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==25985==
+==25985== For counts of detected and suppressed errors, rerun with: -v
+==25985== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+```
+
+where the **160 bytes** also show up.
